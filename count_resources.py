@@ -7,8 +7,9 @@ resource_totals = {}
 @click.command()
 @click.option('--access', help='AWS Access Key. Otherwise will use the standard credentials path for the AWS CLI.')
 @click.option('--secret', help='AWS Secret Key')
+@click.option('--token', help='AWS Auth Token')
 @click.option('--profile', help='If you have multiple credential profiles, use this option to specify one.')
-def controller(access, secret, profile):
+def controller(access, secret, token, profile):
     global session
     if access:
         click.echo('Access Key specified')
@@ -17,7 +18,7 @@ def controller(access, secret, profile):
         else:
             click.echo('Establishing AWS session using the provided access key...')
             try:
-                session = boto3.session.Session(aws_access_key_id=access, aws_secret_access_key=secret)
+                session = boto3.session.Session(aws_access_key_id=access, aws_secret_access_key=secret, aws_session_token=token)
             except:
                 click.echo('Error establishing AWS connection. Likely bad credentials provided.')
                 sys.exit()
