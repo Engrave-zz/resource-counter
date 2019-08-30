@@ -8,8 +8,9 @@ resource_totals = {}
 @click.option('--access', help='AWS Access Key. Otherwise will use the standard credentials path for the AWS CLI.')
 @click.option('--secret', help='AWS Secret Key')
 @click.option('--token', help='AWS Auth Token')
+@click.option('--accountid', help='account id')
 @click.option('--profile', help='If you have multiple credential profiles, use this option to specify one.')
-def controller(access, secret, token, profile):
+def controller(access, secret, token, profile, accountid):
     global session
     if access:
         click.echo('Access Key specified')
@@ -38,10 +39,10 @@ def controller(access, secret, token, profile):
             sys.exit()
 
     # pull the account ID for use when needed for filtering
-    iam = session.client('sts')
+    #iam = session.client('sts')
 
     # account_id = iam.CurrentUser().arn.split(':')[4]
-    account_id = iam.get_caller_identity()["Account"]
+    account_id = accountid
     click.echo('Current account ID: ' + account_id)
 
     # Initialize dictionary to hold the counts. Pull the regions using EC2, since that is in every region.
